@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
 	int  version;
 	long  vcc = 3300;
 	union DEVICE_T device;
-	portNumber = "TIUSB";
+	portNumber = "/dev/ttyACM0";
 	
 	printf("#Initializing the interface: ");
 	status = MSP430_Initialize(portNumber, &version);
@@ -64,10 +64,13 @@ int main(int argc, char *argv[]) {
 	if(status != STATUS_OK) {
 		return 1;
 	}
-
+        //1.1 Load device database
+	status = MSP430_LoadDeviceDb(NULL);
+        printf("#MSP430_LoadDeviceDb() \n");
+	if(status !=STATUS_OK)
+		return 1;
 	//status = MSP430_Configure(ET_CURRENTDRIVE_FINE, 1);
 	printf("#MSP430_Configure(ET_CURRENTDRIVE_FINE, 1) =%d\n", status);
-
 	// 2. Set the device Vcc.
 	printf("#Setting the device Vcc: ");
 	status = MSP430_VCC(vcc);
